@@ -20,7 +20,8 @@
   },
   "homepage": "https://github.com/opentable/hapi-service-discovery",
   "dependencies": {
-    "fqdn": "0.0.1"
+    "fqdn": "0.0.1",
+    "ot-discovery": "opentable/ot-discovery-nodejs"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
