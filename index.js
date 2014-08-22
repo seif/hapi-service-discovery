@@ -60,6 +60,13 @@ exports.register = function(plugin, options, next){
     }
   ]);
 
+  plugin.expose({
+    announce: service.announce,
+    unannounce: service.unannounce,
+    find: service.find,
+    findAll: service.findAll
+  });
+
   service.init(plugin, config, function(){
     next();
   });
@@ -68,7 +75,3 @@ exports.register = function(plugin, options, next){
 exports.register.attributes = {
   pkg: require('./package.json')
 };
-
-exports.announce = function(cb){
-  service.announce(cb);
-}
