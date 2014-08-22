@@ -1,0 +1,25 @@
+{
+  "name": "hapi-service-discovery",
+  "version": "0.1.0",
+  "description": "shared code for hapi-based service discovery",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opentable/hapi-service-discovery"
+  },
+  "keywords": [
+    "hapiplugin"
+  ],
+  "author": "Andy Royle <ajroyle@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/opentable/hapi-service-discovery/issues"
+  },
+  "homepage": "https://github.com/opentable/hapi-service-discovery",
+  "dependencies": {
+    "fqdn": "0.0.1"
+  }
+}
