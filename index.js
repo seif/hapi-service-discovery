@@ -68,3 +68,7 @@ exports.register = function(plugin, options, next){
 exports.register.attributes = {
   pkg: require('./package.json')
 };
+
+exports.announce = function(cb){
+  service.announce(cb);
+}
