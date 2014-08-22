@@ -40,7 +40,7 @@ exports.register = function(plugin, options, next){
       path: "/discovery/lease",
       config: {
         handler: function(request, reply){
-          var lease = discovery.lease();
+          var lease = service.lease();
           if(!lease){
             return reply().code(404);
           }
@@ -54,13 +54,13 @@ exports.register = function(plugin, options, next){
       path: "/discovery/lastUpdate",
       config: {
         handler: function(request, reply){
-          reply({ lastUpdate: discovery.lastUpdate().toISOString() });
+          reply({ lastUpdate: service.lastUpdate().toISOString() });
         }
       }
     }
   ]);
 
-  discovery.init(plugin, config, function(){
+  service.init(plugin, config, function(){
     next();
   });
 };
