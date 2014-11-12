@@ -1,8 +1,17 @@
 var service = require('./lib/service'),
+    joi = require('joi'),
+    schema = require('./lib/schema'),
     config = {};
 
 exports.register = function(plugin, options, next){
   config = options;
+  var validation = joi.validate(options, schema)
+
+  if(validation.error){
+    var err = new Error("config validation error")
+    err.inner = validation.error
+    return next(err);
+  }
 
   plugin.log(["discovery"], "registering discovery routes");
   plugin.route([

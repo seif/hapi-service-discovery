@@ -19,7 +19,7 @@ server.pack.register({
   options: {
     host: 'my-discovery-server.com',
     serviceType: 'my-service',
-    serviceUri: 'http://my-service.domain.com'
+    serviceUri: 'http://my-service.domain.com' // Defaults to the machine's FQDN
   }
 });
 
