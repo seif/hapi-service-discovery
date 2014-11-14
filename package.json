@@ -23,7 +23,7 @@
     "fqdn": "0.0.3",
     "hoek": "^2.9.0",
     "joi": "^4.8.1",
-    "ot-discovery": "opentable/ot-discovery-nodejs"
+    "ot-discovery": "^0.2.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
