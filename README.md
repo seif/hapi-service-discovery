@@ -1,12 +1,11 @@
 #Hapi-service-discovery
 [![Build Status](https://travis-ci.org/opentable/hapi-service-discovery.png?branch=master)](https://travis-ci.org/opentable/hapi-service-discovery) [![NPM version](https://badge.fury.io/js/hapi-service-discovery.png)](http://badge.fury.io/js/hapi-service-discovery) ![Dependencies](https://david-dm.org/opentable/hapi-service-discovery.png)
 
-Plugin for hapi to wrap announce/unannounce functionality
+Hapi Plugin for opentable-flavoured service-discovery 
 
 Connects the discovery client, exposes routes for announce, unannounce (so that you can control the server externally), and wraps the logging to server.log
 
 Currently depends on some closed-source modules which we are in the process of open-sourcing
-
 
 Usage:
 
