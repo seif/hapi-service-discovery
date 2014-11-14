@@ -1,5 +1,5 @@
-hapi-service-discovery
----
+#Hapi-service-discovery
+[![Build Status](https://travis-ci.org/opentable/hapi-service-discovery.png?branch=master)](https://travis-ci.org/opentable/hapi-service-discovery) [![NPM version](https://badge.fury.io/js/hapi-service-discovery.png)](http://badge.fury.io/js/hapi-service-discovery) ![Dependencies](https://david-dm.org/opentable/hapi-service-discovery.png)
 
 Plugin for hapi to wrap announce/unannounce functionality
 
