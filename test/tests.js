@@ -85,4 +85,48 @@ describe('tests', function(){
       });
     });
   });
+
+  describe('init', function() {
+    it('should exit on error when callback is not set', function(done) {
+      var service = proxyquire("../lib/service.js", { 'ot-discovery': function DiscoveryClient() {
+          return {
+            connect: function(callback) {
+              callback(new Error('test'));
+            },
+            onUpdate: function() { }
+          };
+        }
+      });
+
+      try {
+        service.init({ log: function() {} }, { host: 'someservice.com' }, function () { });
+      } catch(e) {
+        done();
+      }
+    });
+
+    it('should continue on error when onError callback is set', function(done) {
+      var service = proxyquire("../lib/service.js", { 'ot-discovery': function DiscoveryClient() {
+          return {
+            connect: function(callback) {
+              callback(new Error('test'));
+            },
+            onUpdate: function() { }
+          };
+        }
+      });
+
+      service.init(
+          {
+            log: function() {} },
+          {
+            host: 'someservice.com',
+            onError: function(err) {
+              done();
+            }
+          },
+          function () { }
+      );
+    });
+  });
 });
