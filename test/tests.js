@@ -39,6 +39,15 @@ describe('tests', function(){
       });
     });
 
+    it('should accept metadata parameter', function(done){
+      var p = proxyquire("../index.js", { './lib/service': dummyService });
+      p.register(plugin, {
+        host: 'someservice.com',
+        serviceType: 'myservice',
+        metadata: { }
+      }, done);
+    });
+
     it('should not accept a garbage uri for the serviceUri', function(done){
       var p = proxyquire("../index.js", { './lib/service': dummyService });
       p.register(plugin, {
@@ -129,4 +138,34 @@ describe('tests', function(){
       );
     });
   });
+
+    describe('announce', function() {
+        it('should announce with metadata when metadata is set', function(done) {
+            var service = proxyquire("../lib/service.js", { 'ot-discovery': function DiscoveryClient() {
+                return {
+                    connect: function(callback) {
+                        callback();
+                    },
+                    onUpdate: function() { },
+                    announce: function(announcement) {
+                        announcement.metadata.test.should.eql(true);
+                        done();
+                    }
+                };
+            }
+            });
+
+            service.init(
+                {
+                    log: function() {} },
+                {
+                    host: 'someservice.com',
+                    metadata: { test: true }
+                },
+                function () { }
+            );
+
+            service.announce();
+        });
+    });
 });

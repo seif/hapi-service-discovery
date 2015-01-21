@@ -18,7 +18,10 @@ server.pack.register({
   options: {
     host: 'my-discovery-server.com',
     serviceType: 'my-service',
-    serviceUri: 'http://my-service.domain.com', // Defaults to the machine's FQDN
+    serviceUri: 'http://my-service.domain.com', // Defaults to the machine's FQDN,
+    metadata: { // metadata is optional
+      domain: 'com'
+    }, 
     onError: function(err) {
       // optional error handler
       // when set, forces initialisation to continue when any runtime errors are encountered
