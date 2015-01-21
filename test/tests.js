@@ -39,6 +39,15 @@ describe('tests', function(){
       });
     });
 
+    it('should accept metadata parameter', function(done){
+      var p = proxyquire("../index.js", { './lib/service': dummyService });
+      p.register(plugin, {
+        host: 'someservice.com',
+        serviceType: 'myservice',
+        metadata: { }
+      }, done);
+    });
+
     it('should not accept a garbage uri for the serviceUri', function(done){
       var p = proxyquire("../index.js", { './lib/service': dummyService });
       p.register(plugin, {
