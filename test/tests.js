@@ -138,4 +138,34 @@ describe('tests', function(){
       );
     });
   });
+
+    describe('announce', function() {
+        it('should announce with metadata when metadata is set', function(done) {
+            var service = proxyquire("../lib/service.js", { 'ot-discovery': function DiscoveryClient() {
+                return {
+                    connect: function(callback) {
+                        callback();
+                    },
+                    onUpdate: function() { },
+                    announce: function(announcement) {
+                        announcement.metadata.test.should.eql(true);
+                        done();
+                    }
+                };
+            }
+            });
+
+            service.init(
+                {
+                    log: function() {} },
+                {
+                    host: 'someservice.com',
+                    metadata: { test: true }
+                },
+                function () { }
+            );
+
+            service.announce();
+        });
+    });
 });
