@@ -19,6 +19,7 @@ server.pack.register({
     host: 'my-discovery-server.com',
     serviceType: 'my-service',
     serviceUri: 'http://my-service.domain.com', // Defaults to the machine's FQDN,
+    discoveryRoutesAuth: false, // discoveryRoutesAuth is optional, and can either be false or the name of an auth strategy.
     metadata: { // metadata is optional
       domain: 'com'
     }, 
