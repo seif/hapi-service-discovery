@@ -29,6 +29,14 @@ describe('tests', function(){
       }, done);
     });
 
+    it('should accept port number in host field', function(done){
+      var p = proxyquire("../index.js", { './lib/service': dummyService });
+      p.register(plugin, {
+        host: 'someservice.com:8888',
+        serviceType: 'myservice',
+      }, done);
+    });
+
     it('should only accept a hostname for the host', function(done){
       var p = proxyquire("../index.js", { './lib/service': dummyService });
       p.register(plugin, {
