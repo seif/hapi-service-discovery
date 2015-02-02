@@ -1,9 +1,10 @@
 var service = require('./lib/service'),
     joi = require('joi'),
     schema = require('./lib/schema'),
+    routes = require('./lib/routes'),
     config = {};
 
-exports.register = function(plugin, options, next){
+exports.register = function(server, options, next){
   config = options;
   var validation = joi.validate(options, schema)
 
@@ -13,67 +14,10 @@ exports.register = function(plugin, options, next){
     return next(err);
   }
 
-  plugin.log(["discovery"], "registering discovery routes");
-  plugin.route([
-    {
-      method: "GET",
-      path: "/discovery/announce",
-      config: {
-        auth: options.discoveryRoutesAuth,
-        handler: function(request, reply){
-          service.announce(function(err){
-            if(err){
-                return reply(err);
-            }
+  server.log(["discovery"], "registering discovery routes");
+  server.route(routes(config));
 
-            reply();
-          });
-        }
-      }
-    },
-    {
-      method: "GET",
-      path: "/discovery/unannounce",
-      config: {
-        auth: options.discoveryRoutesAuth,
-        handler: function(request, reply){
-          service.unannounce(function(err){
-            if(err){
-              return reply(err);
-            }
-            reply();
-          });
-        }
-      }
-    },
-    {
-      method: "GET",
-      path: "/discovery/lease",
-      config: {
-        auth: options.discoveryRoutesAuth,
-        handler: function(request, reply){
-          var lease = service.lease();
-          if(!lease){
-            return reply().code(404);
-          }
-
-          reply(lease);
-        }
-      }
-    },
-    {
-      method: "GET",
-      path: "/discovery/lastUpdate",
-      config: {
-        auth: options.discoveryRoutesAuth,
-        handler: function(request, reply){
-          reply({ lastUpdate: service.lastUpdate().toISOString() });
-        }
-      }
-    }
-  ]);
-
-  plugin.expose({
+  server.expose({
     announce: service.announce,
     unannounce: service.unannounce,
     find: service.find,
