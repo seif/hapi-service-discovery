@@ -26,7 +26,7 @@ exports.register = function(server, options, next){
 
   if(config.gracefulShutdown){
     server.dependency('hapi-shutdown', function(_, done){
-      server.plugins['hapi-shutdown'].register({
+      var err = server.plugins['hapi-shutdown'].register({
         taskname: 'discovery-unannounce',
         task: function(){
           service.unannounce(function(){});
@@ -35,7 +35,7 @@ exports.register = function(server, options, next){
         timeout: config.waitOnShutdown || 30 * 1000
       });
 
-      done();
+      done(err);
     });
   }
 
