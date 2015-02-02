@@ -24,7 +24,22 @@ exports.register = function(server, options, next){
     findAll: service.findAll
   });
 
-  service.init(plugin, config, function(){
+  if(config.gracefulShutdown){
+    server.dependency('hapi-shutdown', function(_, done){
+      server.plugins['hapi-shutdown'].register({
+        taskname: 'discovery-unannounce',
+        task: function(){
+          service.unannounce(function(){});
+          // don't call done because we need to wait for the timeout
+        },
+        timeout: config.waitOnShutdown || 30 * 1000
+      });
+
+      done();
+    });
+  }
+
+  service.init(server, config, function(){
     next();
   });
 };
