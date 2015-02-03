@@ -1,6 +1,8 @@
 describe('tests', function(){
   var should = require('should'),
-  proxyquire = require('proxyquire').noCallThru(),
+      hoek = require('hoek'),
+      proxyquire = require('proxyquire').noCallThru(),
+
   dummyService = {
     init: function(a, b, c){
       c();
@@ -10,7 +12,16 @@ describe('tests', function(){
   plugin = {
     route: function(r){ routes = r; },
     log: function(){},
-    expose: function(){}
+    expose: function(){},
+    plugins: {
+      'hapi-shutdown': {
+        register: function(task){
+          task.taskname.should.eql('discovery-unannounce');
+          task.timeout.should.eql(30000);
+          var t = task.task.should.be.an.Function;
+        }
+      }
+    }
   };
 
   describe('config validation', function(){
@@ -103,6 +114,43 @@ describe('tests', function(){
     });
   });
 
+  describe('graceful shutdown', function(){
+    it('should add dependency on hapi-shutdown', function(done){
+      var p = proxyquire("../index.js", { './lib/service': dummyService });
+      var localPlugin = hoek.applyToDefaults({
+        dependency: function(p, callback){
+          p.should.eql('hapi-shutdown');
+          done();
+        }
+      }, plugin);
+
+      p.register(localPlugin, {
+        host: 'someservice.com',
+        serviceType: 'myservice',
+        gracefulShutdown: true
+      }, function(err){});
+    });
+
+    it('should add register the unannounce trigger with hapi-shutdown', function(done){
+      var p = proxyquire("../index.js", { './lib/service': dummyService });
+
+      var localPlugin = hoek.applyToDefaults({
+        dependency: function(p, callback){
+          p.should.eql('hapi-shutdown');
+          callback(localPlugin, function(err){
+            done(err);
+          });
+        }
+      }, plugin);
+
+      p.register(localPlugin, {
+        host: 'someservice.com',
+        serviceType: 'myservice',
+        gracefulShutdown: true
+      }, function(err){});
+    });
+  });
+
   describe('init', function() {
     it('should exit on error when callback is not set', function(done) {
       var service = proxyquire("../lib/service.js", { 'ot-discovery': function DiscoveryClient() {
@@ -123,7 +171,9 @@ describe('tests', function(){
     });
 
     it('should continue on error when onError callback is set', function(done) {
-      var service = proxyquire("../lib/service.js", { 'ot-discovery': function DiscoveryClient() {
+      var service = proxyquire("../lib/service.js",
+      {
+        'ot-discovery': function DiscoveryClient() {
           return {
             connect: function(callback) {
               callback(new Error('test'));
@@ -133,47 +183,45 @@ describe('tests', function(){
         }
       });
 
-      service.init(
-          {
-            log: function() {} },
-          {
-            host: 'someservice.com',
-            onError: function(err) {
-              done();
-            }
-          },
-          function () { }
+      service.init({ log: function() {} },
+        {
+          host: 'someservice.com',
+          onError: function(err) {
+            done();
+          }
+        },
+        function () {}
       );
     });
   });
 
-    describe('announce', function() {
-        it('should announce with metadata when metadata is set', function(done) {
-            var service = proxyquire("../lib/service.js", { 'ot-discovery': function DiscoveryClient() {
-                return {
-                    connect: function(callback) {
-                        callback();
-                    },
-                    onUpdate: function() { },
-                    announce: function(announcement) {
-                        announcement.metadata.test.should.eql(true);
-                        done();
-                    }
-                };
+  describe('announce', function() {
+    it('should announce with metadata when metadata is set', function(done) {
+      var service = proxyquire("../lib/service.js",
+      {
+        'ot-discovery': function DiscoveryClient() {
+          return {
+            connect: function(callback) {
+                callback();
+            },
+            onUpdate: function() { },
+            announce: function(announcement) {
+              announcement.metadata.test.should.eql(true);
+              done();
             }
-            });
+          };
+        }
+      });
 
-            service.init(
-                {
-                    log: function() {} },
-                {
-                    host: 'someservice.com',
-                    metadata: { test: true }
-                },
-                function () { }
-            );
+      service.init({ log: function() {} },
+        {
+          host: 'someservice.com',
+          metadata: { test: true }
+        },
+        function () { }
+      );
 
-            service.announce();
-        });
+      service.announce();
     });
+  });
 });

@@ -1,7 +1,7 @@
 #Hapi-service-discovery
 [![Build Status](https://travis-ci.org/opentable/hapi-service-discovery.png?branch=master)](https://travis-ci.org/opentable/hapi-service-discovery) [![NPM version](https://badge.fury.io/js/hapi-service-discovery.png)](http://badge.fury.io/js/hapi-service-discovery) ![Dependencies](https://david-dm.org/opentable/hapi-service-discovery.png)
 
-Hapi Plugin for opentable-flavoured service-discovery 
+Hapi Plugin for opentable-flavoured service-discovery
 
 Connects the discovery client, exposes routes for announce, unannounce (so that you can control the server externally), and wraps the logging to server.log
 
@@ -22,11 +22,13 @@ server.pack.register({
     discoveryRoutesAuth: false, // optional, default behaviour is to inherit the route default, can either be false (to disable auth) or the name of an auth strategy (to override the route default).
     metadata: { // metadata is optional
       domain: 'com'
-    }, 
+    },
     onError: function(err) {
       // optional error handler
       // when set, forces initialisation to continue when any runtime errors are encountered
-    }
+    },
+    gracefulShutdown: true, // uses hapi-shutdown to unannounce gracefully on SIGTERM (defaults to false)
+    waitOnShutdown: 20 * 1000 // time to wait after unannounce (defaults to 30 seconds)
 });
 
 server.start(function(){
