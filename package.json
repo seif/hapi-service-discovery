@@ -1,6 +1,6 @@
 {
   "name": "hapi-service-discovery",
-  "version": "0.6.0",
+  "version": "1.0.0",
   "description": "shared code for hapi-based service discovery",
   "main": "index.js",
   "scripts": {
