@@ -22,16 +22,16 @@
   "dependencies": {
     "fqdn": "0.0.3",
     "hoek": "^2.9.0",
-    "joi": "^4.8.1",
-    "ot-discovery": "0.2.1"
+    "joi": "^6.1.1",
+    "ot-discovery": "0.3.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-cli": "^0.1.13",
-    "grunt-contrib-jshint": "^0.10.0",
-    "grunt-mocha-test": "^0.11.0",
-    "hoek": "^2.11.0",
-    "proxyquire": "^1.0.1",
-    "should": "^4.3.0"
+    "grunt-contrib-jshint": "^0.11.1",
+    "grunt-mocha-test": "^0.12.7",
+    "hoek": "^2.12.0",
+    "proxyquire": "^1.4.0",
+    "should": "^5.2.0"
   }
 }
