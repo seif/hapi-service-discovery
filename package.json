@@ -23,7 +23,7 @@
     "fqdn": "0.0.3",
     "hoek": "^2.9.0",
     "joi": "^6.1.1",
-    "ot-discovery": "0.3.0"
+    "ot-discovery": "ssetem/ot-discovery-nodejs#split"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
